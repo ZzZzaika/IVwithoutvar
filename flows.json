@@ -1,0 +1,300 @@
+[
+    {
+        "id": "245ec3016a0ff293",
+        "type": "tab",
+        "label": "Поток 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f4e1e7d1.b7d7e8",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true
+    },
+    {
+        "id": "fc6ab5ce5f359623",
+        "type": "ui_tab",
+        "name": "Tab 1",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "1bdff39fb5289f05",
+        "type": "ui_group",
+        "name": "уровень яркости",
+        "tab": "fc6ab5ce5f359623",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false
+    },
+    {
+        "id": "6b98bbe0bf867f0b",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "c1e8f0b1.9c4b4",
+        "type": "inject",
+        "z": "245ec3016a0ff293",
+        "name": "Проверка освещения",
+        "props": [],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "e2f3a3e0.9b0a58"
+            ]
+        ]
+    },
+    {
+        "id": "e2f3a3e0.9b0a58",
+        "type": "function",
+        "z": "245ec3016a0ff293",
+        "name": "Определение времени суток",
+        "func": "const currentHour = new Date().getHours();\nconst isDark = (currentHour <= 6 || currentHour >= 18);\nmsg.payload = isDark ? \"on\" : \"off\";\nnode.warn(`Состояние освещения: ${msg.payload}`);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 100,
+        "wires": [
+            [
+                "f5a3b9d8.8d1f68"
+            ]
+        ]
+    },
+    {
+        "id": "f5a3b9d8.8d1f68",
+        "type": "mqtt out",
+        "z": "245ec3016a0ff293",
+        "name": "",
+        "topic": "iot_practice/5404/lamp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f4e1e7d1.b7d7e8",
+        "x": 780,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a110fb6284decb3f",
+        "type": "function",
+        "z": "245ec3016a0ff293",
+        "name": "яркость",
+        "func": "const currentHour = new Date().getHours();\nlet brightness;\n\nif ((currentHour >= 20 && currentHour < 24) || (currentHour >= 0 && currentHour < 6)) {\n    brightness = 100;\n} else if (currentHour >= 18 && currentHour < 19) {\n    brightness = 50;\n} else if (currentHour >= 19 && currentHour < 20) {\n    brightness = 70;\n} else {\n    brightness = 0;\n}\n\nmsg.payload = brightness;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "b7d523eb777f239d"
+            ]
+        ]
+    },
+    {
+        "id": "b7d523eb777f239d",
+        "type": "mqtt out",
+        "z": "245ec3016a0ff293",
+        "name": "",
+        "topic": "iot_practice/5404/lamp/value",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f4e1e7d1.b7d7e8",
+        "x": 750,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "959591ae0092eedf",
+        "type": "inject",
+        "z": "245ec3016a0ff293",
+        "name": "Проверка яркости",
+        "props": [],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "a110fb6284decb3f"
+            ]
+        ]
+    },
+    {
+        "id": "4efcfcb79387b6bd",
+        "type": "mqtt in",
+        "z": "245ec3016a0ff293",
+        "name": "",
+        "topic": "iot_practice/5404/lamp/value",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "f4e1e7d1.b7d7e8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "83506e60e50643dc"
+            ]
+        ]
+    },
+    {
+        "id": "83506e60e50643dc",
+        "type": "ui_gauge",
+        "z": "245ec3016a0ff293",
+        "name": "яркость",
+        "group": "1bdff39fb5289f05",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Яркость",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 240,
+        "wires": []
+    }
+]
